@@ -14,7 +14,7 @@ spring:
     password: "{cipher}e23db7ec02ab706c93bee68f4f2637c81fc7681d55d6481d128e9cb3535409d2"
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://bts-database.crtppt0lvgk7.ap-northeast-2.rds.amazonaws.com:3306/BTS
+    url: jdbc:mariadb://localhost:3306/bts
     username: bts
     password: btsbts12
   jpa:
@@ -38,15 +38,3 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://3.38.31.74:8761/eureka/
-
-cloud:
-  aws:
-    credentials:
-      accessKey: "{cipher}07b110c1a3724943b52fefc2708619177ce9a94e6f82156b2dcca6cf74fb6bd2671a93d7cdb4a8e198f084de531bf1ca"
-      secretKey: "{cipher}930da646ad38a9f56f3f572c3404d36b97898b71a23fbf9561146b41c08a90596a4d4c62e58bbcc2f291f1c869e247eda2510af63a9c0a8697fd6a358c61a864"
-    s3:
-      bucket: wonhee-bucket
-    region:
-      static: ap-northeast-2
-    stack:
-      auto: false
