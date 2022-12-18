@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: board-server
+  rabbitmq: # RabbitMQ 관련 설정
+    host: 3.38.31.74
+    port: 5672
+    username: bts
+    password: "{cipher}e23db7ec02ab706c93bee68f4f2637c81fc7681d55d6481d128e9cb3535409d2"
+  data:
+    mongodb:
+      uri: mongodb://mongo:27017/bts-board-db
+server:
+  port: 8080
+
+eureka:
+  instance:
+    instance-id: board-ms-instance
+    hostname: 3.35.194.19
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://3.38.31.74:8761/eureka

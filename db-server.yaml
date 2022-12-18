@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  rabbitmq: # RabbitMQ 관련 설정
+    host: 3.38.31.74
+    port: 5672
+    username: bts
+    password: "{cipher}e23db7ec02ab706c93bee68f4f2637c81fc7681d55d6481d128e9cb3535409d2"
+    
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://bts-database.crtppt0lvgk7.ap-northeast-2.rds.amazonaws.com:3306/BTS
+    username: bts
+    password: btsbts12
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+
+  application:
+    name: db-service
+  sleuth:
+    enabled: true
+    sampler:
+      probability: 0.5
+  zipkin:
+    base-url: http://3.38.28.154:9411/
+eureka:
+  instance:
+    instance-id: db-ms-instance
+    hostname: 3.35.78.48
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://3.38.31.74:8761/eureka

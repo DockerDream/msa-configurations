@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: main-server
+  sleuth:
+    enabled: true
+    sampler:
+      probability: 0.5
+  zipkin:
+    base-url: http://3.38.28.154:9411/
+  rabbitmq: # RabbitMQ 관련 설정
+    host: 3.38.31.74
+    port: 5672
+    username: bts
+    password: "{cipher}e23db7ec02ab706c93bee68f4f2637c81fc7681d55d6481d128e9cb3535409d2"
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://bts-database.crtppt0lvgk7.ap-northeast-2.rds.amazonaws.com:3306/BTS
+    username: bts
+    password: btsbts12
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDBDialect
+  redis:
+    host: redisstock
+    port: 6379
+server:
+  port: 8080
+eureka:
+  instance:
+    instance-id: main-ms-instance
+    hostname: 3.38.43.67
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://3.38.31.74:8761/eureka/
+
+cloud:
+  aws:
+    credentials:
+      accessKey: "{cipher}07b110c1a3724943b52fefc2708619177ce9a94e6f82156b2dcca6cf74fb6bd2671a93d7cdb4a8e198f084de531bf1ca"
+      secretKey: "{cipher}930da646ad38a9f56f3f572c3404d36b97898b71a23fbf9561146b41c08a90596a4d4c62e58bbcc2f291f1c869e247eda2510af63a9c0a8697fd6a358c61a864"
+    s3:
+      bucket: wonhee-bucket
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

@@ -1,0 +1,136 @@
+server:
+  port: 8000
+
+eureka:
+  instance:
+    instance-id: gateway-ms-instance
+
+
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+
+spring:
+  rabbitmq: # RabbitMQ 관련 설정
+    host: 3.38.31.74
+    port: 5672
+    username: bts
+    password: "{cipher}e23db7ec02ab706c93bee68f4f2637c81fc7681d55d6481d128e9cb3535409d2"
+  security:
+    jwt:
+      token:
+        security-key: "{cipher}e28fb01d77f05afb7981fff27f7eff676a19c80ee896eb0c7ba0cda46d1e0512"
+  application:
+    name: gateway-service
+  sleuth:
+    enabled: true
+    sampler:
+      probability: 0.5
+  zipkin:
+    base-url: http://3.38.28.154:9411/
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: ["http://localhost:3000","http://bithumb-bts.com","http://3.35.69.11"]
+            allow-credentials: true
+            add-to-simple-url-handler-mapping: true
+            allowedHeaders:
+              - x-requested-with
+              - authorization
+              - content-type
+              - credential
+              - token
+              - refresh
+            allowedMethods:
+              - POST
+              - GET
+              - PUT
+              - OPTIONS
+              - DELETE
+      routes:
+        - id: auth-ms-instance
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/logout
+          filters:
+            - RewritePath=/auth/?(?<segment>.*), /$\{segment}
+
+        - id: auth-ms-instance
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/login
+          filters:
+            - RewritePath=/auth/?(?<segment>.*), /$\{segment}
+            
+        - id: auth-ms-instance
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/refresh
+          filters:
+            - GlobalRefreshFilter
+            - RewritePath=/auth/?(?<segment>.*), /$\{segment}
+
+        - id: board-ms-instance
+          uri: lb://BOARD-SERVER
+          predicates:
+            - Path=/board/**
+          filters:
+            - GlobalAuthFilter
+            - RewritePath=/board/?(?<segment>.*), /$\{segment}
+            
+        - id: main-ms-instance
+          uri: lb://MAIN-SERVER
+          predicates:
+            - Path=/main/klayapi
+          filters:
+            - RewritePath=/main/?(?<segment>.*), /$\{segment}
+            
+        - id: main-ms-instance
+          uri: lb://MAIN-SERVER
+          predicates:
+            - Path=/main/NFT/allNFT
+          filters:
+            - RewritePath=/main/?(?<segment>.*), /$\{segment}
+            
+        - id: main-ms-instance
+          uri: lb://MAIN-SERVER
+          predicates:
+            - Path=/main/NFT/userlikelist/**
+          filters:
+            - RewritePath=/main/?(?<segment>.*), /$\{segment}  
+            
+        - id: main-ms-instance
+          uri: lb://MAIN-SERVER
+          predicates:
+            - Path=/main/NFT/findNFT/**
+          filters:
+            - RewritePath=/main/?(?<segment>.*), /$\{segment}
+            
+        - id: main-ms-instance
+          uri: lb://MAIN-SERVER
+          predicates:
+            - Path=/main/**
+          filters:
+            - GlobalAuthFilter
+            - RewritePath=/main/?(?<segment>.*), /$\{segment}
+            
+        - id: consumer-ms-instance
+          uri: lb://AUCTION-CONSUMER
+          predicates:
+            - Path=/consumer/**
+          filters:
+            - GlobalAuthFilter
+            - RewritePath=/consumer/?(?<segment>.*), /$\{segment}
+            
+        - id: producer-ms-instance
+          uri: lb://AUCTION-PRODUCER
+          predicates:
+            - Path=/producer/**
+          filters:
+            - GlobalAuthFilter
+            - RewritePath=/producer/?(?<segment>.*), /$\{segment}
+
